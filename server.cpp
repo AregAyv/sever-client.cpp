@@ -17,14 +17,15 @@
 
 // function to check if a number is prime
 bool is_prime(int n) {
-    if (n <= 1) return false;
-    if (n <= 3) return true;
-    if (n % 2 == 0 || n % 3 == 0) return false;
-    for (int i = 5; i * i <= n; i += 6) {
-        if (n % i == 0 || n % (i + 2) == 0) {
+    if (n <= 1) {
+        return false;
+    }
+    for (int i = 2; i * i <= n; ++i) {
+        if (n % i == 0) {
             return false;
         }
     }
+
     return true;
 }
 
@@ -70,14 +71,14 @@ void serve_start(int port) {
     //returns  FD for socket server or -1  
     int server_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (server_socket == -1) {
-        std::cerr << "Error creating server socket" << std::endl;
+        std::cerr << "Failed creating  socket" << std::endl;
         exit(-1);
     }
 
     int yes = 1;
     //installs REUSEADDR operatinon for server whick allows to reuse adress without waiting
     if (setsockopt(server_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1) {
-        std::cerr << "Error setting socket options" << std::endl;
+        std::cerr << "Failed setting socket " << std::endl;
         exit(-1);
     }
 
@@ -91,14 +92,14 @@ void serve_start(int port) {
     server_address.sin_port = htons(port);
     //connsect servers socket to port
     if (bind(server_socket, (struct sockaddr*)&server_address, sizeof(server_address)) != 0) {
-        std::cerr << "Error failed to connect" << std::endl;
+        std::cerr << "Failed to connect" << std::endl;
         exit(-1);
     }
 
     // Listen for incoming connections
     //Changes socket into listening mode
     if (listen(server_socket, SOMAXCONN) == -1) {
-        std::cerr << "Error listening for connections" << std::endl;
+        std::cerr << "Failed listening " << std::endl;
         exit(-1);
     }
 
@@ -157,7 +158,7 @@ while (true) {
 
 int main(int argc, char* argv[]) {
      if (argc != 2) {
-        std::cerr << "too few arguments" << std::endl;
+        std::cerr << "Too few arguments" << std::endl;
         exit(-1);
     }
 
