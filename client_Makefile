@@ -1,0 +1,10 @@
+CC=g++
+CFLAGS=-std=c++11
+
+all: client
+
+client: client.cpp
+  $(CC) $(CFLAGS) client.cpp -o client
+
+clean:
+  rm -f client
